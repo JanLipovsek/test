@@ -11,7 +11,7 @@ on:
     branches: [ "main" ]
 jobs:
   test_something:
-    runs-on: ["self-hosted"]
+    runs-on: ["self-hosted", "LipaPC"]
     steps:
     - name: Failing step
       id: demo
@@ -33,7 +33,7 @@ jobs:
         output: |
           {"summary":"false"}        
   test_with_details:
-    runs-on: ["self-hosted"]
+    runs-on: ["self-hosted", "LipaPC"]
     steps:
     - uses: actions/checkout@v3
     - uses: LouisBrunner/checks-action@v1.6.0
