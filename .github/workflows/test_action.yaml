@@ -13,6 +13,8 @@ jobs:
   test_something:
     runs-on: ["self-hosted", "LipaPC"]
     steps:
+      env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v3
     - uses: LouisBrunner/checks-action@v1.6.0
       with:
