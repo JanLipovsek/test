@@ -17,6 +17,10 @@ jobs:
     - uses: LouisBrunner/checks-action@v1.6.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        name: Test 
+        conclusion: "{"false"}
+        output: |
+          {"qweqwe"}
     - name: Failing step
       id: demo
       run: echo "banana"
