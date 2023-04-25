@@ -15,31 +15,4 @@ jobs:
     steps:
     - name: Failing step
       id: demo
-      run: exit 1
-    - uses: LouisBrunner/checks-action@v1.6.0
-      if: ${{true}}
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: Test XYZ
-        conclusion: ${{ job.status }}
-        output: |
-          {"summary":"true"}
-    - uses: LouisBrunner/checks-action@v1.6.0
-      if: ${{false}}
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: Test XYZ
-        conclusion: ${{ job.status }}
-        output: |
-          {"summary":"false"}        
-  test_with_details:
-    runs-on: ["self-hosted", "LipaPC"]
-    steps:
-    - uses: actions/checkout@v3
-    - uses: LouisBrunner/checks-action@v1.6.0
-      with:
-        token: ${{ secrets.MY_TOKEN }}
-        name: Test With Details
-        conclusion: success
-        action_url: https://docs.luxonis.com/projects/api/en/latest/components/nodes/image_manip/
-        details_url: https://docs.luxonis.com/projects/api/en/latest/components/nodes/imu/
+      run: echo "banana"
