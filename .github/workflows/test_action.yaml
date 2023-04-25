@@ -18,7 +18,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         name: Test 
-        conclusion: "false"
+        conclusion: "success"
         output: |
           {"qweqwe"}
     - name: Failing step
