@@ -1,0 +1,95 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Test action
+
+# Don't run this workflow concurrently
+concurrency: regressions-tests.yml
+
+on:
+  push:
+    branches: [ "test" ]
+jobs:
+  prepare:
+
+    runs-on: ["self-hosted", "regression-test"] 
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          submodules: 'recursive'
+    - uses: actions/checkout@v3
+      if: ${{ github.event.client_payload.ref }}
+      with:
+        submodules: 'recursive'
+        ref: ${{ github.event.client_payload.ref }}
+        repository: 'luxonis/depthai-python'
+        path: 'depthai-python-stock'
+      # Clone depthai-python pointed
+    - uses: actions/checkout@v3
+      if: ${{ github.event.inputs.commit }}
+      with:
+        submodules: 'recursive'
+        ref: ${{ github.event.inputs.commit }}
+        repository: 'luxonis/depthai-python'
+        path: 'depthai-python-stock'
+
+  generate_table:
+    runs-on: ["self-hosted", "regression-test"]
+    needs: [prepare]
+    steps:
+      - name: pwd
+        run: |
+          pwd
+          ls -a
+          echo "The run ID is $GITHUB_RUN_ID"
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Results
+          path: ./stats.png
+
+      - name: Set output variable
+        run: echo "https://github.com/luxonis/depthai-core-hil-tests/suites/${GITHUB_RUN_ID}/artifacts/stats.png"
+
+      - name: Display artifact URL
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const artifactUrl = '${{ steps.upload-artifact.outputs.artifact_url }}';
+            console.log(`Artifact URL: ${artifactUrl}`);
+      - name: run script
+        run: python3 ./scripts/gen_markdown.py
+
+  test_something:
+    runs-on: ["self-hosted", "regression-test"]
+    steps:
+    - name: Failing step
+      id: demo
+      run: exit 1
+    - uses: LouisBrunner/checks-action@v1.6.0
+      if: ${{true}}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: Test XYZ
+        conclusion: ${{ job.status }}
+        output: |
+          {"summary":"true"}
+    - uses: LouisBrunner/checks-action@v1.6.0
+      if: ${{false}}
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: Test XYZ
+        conclusion: ${{ job.status }}
+        output: |
+          {"summary":"false"}        
+  test_with_details:
+    runs-on: ["self-hosted", "regression-test"]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: Test With Details
+        conclusion: success
+        action_url: https://docs.luxonis.com/projects/api/en/latest/components/nodes/image_manip/
+        details_url: https://docs.luxonis.com/projects/api/en/latest/components/nodes/imu/
