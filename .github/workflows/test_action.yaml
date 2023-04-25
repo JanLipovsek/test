@@ -23,4 +23,4 @@ jobs:
           {"summary":"Test was a success","text_description":"This is a text description of the annotations and images\nWith more stuff\nAnd more"}
     - name: Failing step
       id: demo
-      run: echo "banana"
+      run: echo "bananaa"
