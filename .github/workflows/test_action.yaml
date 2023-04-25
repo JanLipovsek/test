@@ -8,60 +8,10 @@ concurrency: regressions-tests.yml
 
 on:
   push:
-    branches: [ "test" ]
+    branches: [ "main" ]
 jobs:
-  prepare:
-
-    runs-on: ["self-hosted", "regression-test"] 
-    steps:
-    - uses: actions/checkout@v3
-      with:
-          submodules: 'recursive'
-    - uses: actions/checkout@v3
-      if: ${{ github.event.client_payload.ref }}
-      with:
-        submodules: 'recursive'
-        ref: ${{ github.event.client_payload.ref }}
-        repository: 'luxonis/depthai-python'
-        path: 'depthai-python-stock'
-      # Clone depthai-python pointed
-    - uses: actions/checkout@v3
-      if: ${{ github.event.inputs.commit }}
-      with:
-        submodules: 'recursive'
-        ref: ${{ github.event.inputs.commit }}
-        repository: 'luxonis/depthai-python'
-        path: 'depthai-python-stock'
-
-  generate_table:
-    runs-on: ["self-hosted", "regression-test"]
-    needs: [prepare]
-    steps:
-      - name: pwd
-        run: |
-          pwd
-          ls -a
-          echo "The run ID is $GITHUB_RUN_ID"
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: Test Results
-          path: ./stats.png
-
-      - name: Set output variable
-        run: echo "https://github.com/luxonis/depthai-core-hil-tests/suites/${GITHUB_RUN_ID}/artifacts/stats.png"
-
-      - name: Display artifact URL
-        uses: actions/github-script@v3
-        with:
-          script: |
-            const artifactUrl = '${{ steps.upload-artifact.outputs.artifact_url }}';
-            console.log(`Artifact URL: ${artifactUrl}`);
-      - name: run script
-        run: python3 ./scripts/gen_markdown.py
-
   test_something:
-    runs-on: ["self-hosted", "regression-test"]
+    runs-on: ["self-hosted"]
     steps:
     - name: Failing step
       id: demo
@@ -83,10 +33,10 @@ jobs:
         output: |
           {"summary":"false"}        
   test_with_details:
-    runs-on: ["self-hosted", "regression-test"]
+    runs-on: ["self-hosted"]
     steps:
     - uses: actions/checkout@v3
-    - uses: ./
+    - uses: LouisBrunner/checks-action@v1.6.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         name: Test With Details
