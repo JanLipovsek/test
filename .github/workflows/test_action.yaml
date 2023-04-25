@@ -10,18 +10,12 @@ on:
   push:
     branches: [ "main" ]
 jobs:
-  test_something:
-    runs-on: ["self-hosted", "LipaPC"]
-    environment: test
+  test_basic_timed_out:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - uses: LouisBrunner/checks-action@v1.6.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        name: Test 
-        conclusion: "success"
-        output: |
-          {"summary":"Test was a success","text_description":"This is a text description of the annotations and images\nWith more stuff\nAnd more"}
-    - name: Failing step
-      id: demo
-      run: echo "bananaa"
+        name: Test Basic Timed Out
+        conclusion: timed_out
