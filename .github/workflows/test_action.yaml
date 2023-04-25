@@ -14,6 +14,7 @@ jobs:
     runs-on: ["self-hosted", "LipaPC"]
     steps:
     - uses: actions/checkout@v3
+    - uses: LouisBrunner/checks-action@v1.6.0
     - name: Failing step
       id: demo
       run: echo "banana"
