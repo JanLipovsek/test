@@ -19,7 +19,7 @@ jobs:
     - uses: LouisBrunner/checks-action@v1.6.0
       if: ${{true}}
       with:
-        token: ${{ secrets.MY_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         name: Test XYZ
         conclusion: ${{ job.status }}
         output: |
@@ -27,7 +27,7 @@ jobs:
     - uses: LouisBrunner/checks-action@v1.6.0
       if: ${{false}}
       with:
-        token: ${{ secrets.MY_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         name: Test XYZ
         conclusion: ${{ job.status }}
         output: |
